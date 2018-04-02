@@ -132,6 +132,13 @@ $wfa_categorieusers=Invoke-MySqlQuery -Query $query -User $wfadbaccount -Passwor
 $wfa_categorieusers=$wfa_categorieusers[1..($wfa_categorieusers[0]+1)]
 $wfa_categorieusers | Export-Csv -Path $($wfalocation + "wfa_categorieusers.csv")
 
+Get-WFALogger -Info -message $(" [ ] Starting Export of Categories LDAP Groups!")
+$query="select * from wfa.category_ldap_group ldpg,wfa.category wc where wc.id=ldpg.category_id"
+Get-WFALogger -Info -message $("     [Query] " + $query)
+$wfa_categoriegroups=Invoke-MySqlQuery -Query $query -User $wfadbaccount -Password $wfadbpwd
+$wfa_categoriegroups=$wfa_categoriegroups[1..($wfa_categoriegroups[0]+1)]
+$wfa_categoriegroups | Export-Csv -Path $($wfalocation + "wfa_categoriegroups.csv")
+
 Get-WFALogger -Info -message $(" [ ] Starting Export of WFA Packs !")
 $query="select name,version,certification,author,description,show_workflows_in_portal from wfa.pack"
 Get-WFALogger -Info -message $("     [Query] " + $query)
